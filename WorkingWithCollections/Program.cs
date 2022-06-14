@@ -1,4 +1,5 @@
 ﻿using static System.Console;
+using System.Collections.Immutable;
 
 static void Output(string title, IEnumerable<string> collection)
 {
@@ -35,6 +36,15 @@ static void WorkingWithLists()
     cities.Remove("Milan");
 
     Output("After removing two cities", cities);
+
+    // p.347 immutable collections
+
+    ImmutableList<string> immutableCities = cities.ToImmutableList();
+    ImmutableList<string> newList = immutableCities.Add("Rio");
+
+    Output("Immutable list of cities:", immutableCities);
+    Output("New list of cities:", newList);
+
 }
 
 WorkingWithLists();
@@ -133,3 +143,24 @@ static void WorkingWithPriorityQueues()
 }
 
 WorkingWithPriorityQueues();
+
+// p.350 indexes, ranges and spans
+string name = "Samanth Jones";
+
+// Using Substring
+int lengthOfFirst = name.IndexOf(' ');
+int lengthOfLast = name.Length - lengthOfFirst - 1;
+
+string firstName = name.Substring(startIndex: 0, length:lengthOfFirst);
+string lastName = name.Substring(startIndex: name.Length - lengthOfLast, length:lengthOfLast);
+
+WriteLine($"First name : {firstName}, last name : {lastName}");
+
+// using spans
+ReadOnlySpan<char> nameAsSpan = name.AsSpan(); // // AsSpan() Summary:
+                                               //     Creates a new read-only span over a portion of the target string from a specified
+                                               //     position for a specified number of characters.
+ReadOnlySpan<char> firstNameSpan = nameAsSpan[0..lengthOfFirst];
+ReadOnlySpan<char> lastNameSpan = nameAsSpan[^lengthOfLast..^0]; // carat operator means fromEnd: true
+
+WriteLine($"First name : {firstNameSpan}, last name : {lastNameSpan}");
